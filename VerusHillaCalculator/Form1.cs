@@ -5,19 +5,36 @@ namespace VerusHillaCalculator
         public Form1()
         {
             InitializeComponent();
+            InitializeTimer();
         }
 
-        private int time;
-        private int lastTime;
-        private int phase;
-        private bool hardMode;
+        private void InitializeTimer()
+        {
+            GlobalTimer.Interval = 1000;
+            GlobalTimer.Tick += new EventHandler(GlobalTimer_Tick);
+            GlobalTimer.Enabled = false;
+        }
 
-        private readonly int
+        private void InitializeTooltip()
+        {
+            toolTip.SetToolTip(BtnPhase,
+                "현재 체력에 따라 다음 페이즈가 결정됩니다.");
+            toolTip.SetToolTip(BtnStart,
+                "시작하기 직전에 눌러주세요.");
+        }
+
+        private int time; // 총 남은 시간
+        private int lastTime; // 페이즈 인터벌 기준 남은 시간
+        private int phase; // 현재 페이즈
+        // private int tempPhase; // 다음 페이즈
+        private bool hardMode; // 하드 모드 여부
+
+        private readonly int // 노멀 모드
             normal_start = 3 * 60 + 16,
             normal_phase1 = 3 * 60,
             normal_phase2 = 2 * 60 + 30;
 
-        private readonly int
+        private readonly int // 하드 모드
             hard_start = 2 * 60 + 46,
             hard_phase1 = 2 * 60 + 32,
             hard_phase2 = 2 * 60 + 6,
@@ -25,7 +42,9 @@ namespace VerusHillaCalculator
 
         private static void Timer(Label timerOut, int _time)
         {
-            timerOut.Text = (_time / 60).ToString() + ":" + (_time % 60).ToString();
+            timerOut.Text
+                = (_time / 60).ToString("00") + ":"
+                + (_time % 60).ToString("00");
         }
 
         private int GetPhaseTime()
@@ -60,8 +79,14 @@ namespace VerusHillaCalculator
             ModeNormal.Checked = !hardMode;
             ModeHard.Checked = hardMode;
 
-            GameTimer.Text = "00:00";
-            GlobalTimer.Enabled = false;
+            MemberCount.ReadOnly = true;
+            MemberCount.Enabled = true;
+
+            DeathCounter.ReadOnly = true;
+            DeathCounter.Enabled = true;
+            DeathCounter.Value = 0;
+
+            GameTimer.Text = "30:00";
             GlobalTimer.Stop();
 
             time = lastTime = phase = 0;
@@ -72,6 +97,7 @@ namespace VerusHillaCalculator
             time = 0;
             hardMode = true;
             Init();
+            InitializeTooltip();
         }
 
         private void OutgameControlG_Enter(object sender, EventArgs e)
@@ -83,7 +109,7 @@ namespace VerusHillaCalculator
         {
             time--;
             Timer(GameTimer, time);
-            Timer(NextTimer, GetPhaseTime() - lastTime + time);
+            Timer(NextTimer, GetPhaseTime() - lastTime + time - 2);
         }
 
         private void BtnStart_Click(object sender, EventArgs e)
@@ -93,7 +119,13 @@ namespace VerusHillaCalculator
             ModeHard.Enabled = false;
             BtnPhase.Enabled = true;
             BtnFinish.Enabled = true;
+            MemberCount.ReadOnly = true;
+            MemberCount.Enabled = false;
             time = 30 * 60;
+            lastTime = time;
+            Timer(GameTimer, time);
+            Timer(NextTimer, 0);
+            phase = 1;
             GlobalTimer.Start();
         }
 
@@ -114,9 +146,98 @@ namespace VerusHillaCalculator
             }
         }
 
-        private void ����IToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 정보IToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form2 form = new Form2();
+            Form form = new Form2();
+            form.Show();
+        }
+
+        private void MemberCount_ValueChanged(object sender, EventArgs e)
+        {
+            DeathCounter.Maximum = MemberCount.Value * 4;
+            BoxStringCount.Text
+                = (MemberCount.Value * 5
+                - (int)Math.Round(
+                    (double)(
+                    MemberCount.Value * 5 - DeathCounter.Value
+                    ) / 3)
+                - DeathCounter.Value)
+                .ToString();
+        }
+
+        private void BtnPhase_Click(object sender, EventArgs e)
+        {
+            phase++;
+            TimerGroup.Text = "실카 타이머 ";
+            if (hardMode)
+            {
+                if (phase > 3) phase = 3;
+                switch (phase)
+                {
+                    case 1:
+                        TimerGroup.Text += "(다음 페이즈: 61.0%)";
+                        break;
+                    case 2:
+                        TimerGroup.Text += "(다음 페이즈: 31.0%)";
+                        break;
+                    case 3:
+                        TimerGroup.Text += "(마지막 페이즈!)";
+                        break;
+                    default: break;
+                }
+            }
+            else
+            {
+                if (phase > 2) phase = 2;
+                switch (phase)
+                {
+                    case 1:
+                        TimerGroup.Text += "(다음 페이즈: 51.0%)";
+                        break;
+                    case 2:
+                        TimerGroup.Text += "(마지막 페이즈!)";
+                        break;
+                    default: break;
+                }
+            }
+        }
+
+        private void BtnFinish_Click(object sender, EventArgs e)
+        {
+            Init();
+        }
+
+        private void DeathCounter_ValueChanged(object sender, EventArgs e)
+        {
+            BoxStringCount.Text
+                = (MemberCount.Value * 5
+                - (int)Math.Round(
+                    (double)(
+                    MemberCount.Value * 5 - DeathCounter.Value
+                    ) / 3)
+                - DeathCounter.Value)
+                .ToString();
+        }
+
+        private void 종료QToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void BtnExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void 라이센스LToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form form = new License();
+            form.Show();
+        }
+
+        private void HintToolStrip_Click(object sender, EventArgs e)
+        {
+            Form form = new Hint();
             form.Show();
         }
     }

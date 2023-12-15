@@ -117,18 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="GlobalTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="GlobalMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>135, 17</value>
-  </metadata>
-  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>254, 17</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>49</value>
-  </metadata>
+  <data name="label1.Text" xml:space="preserve">
+    <value>진 힐라의 보스 필드 스킬 &lt;영혼 베기&gt;의 남은 시간을 자동으로 계산합니다.
+
+노말 모드의 경우 51.0%에서 시전 간격이 변경됩니다.
+하드 모드의 경우 61.0%와 31.0%에서 시전 간격이 변경됩니다.
+
+&lt;영혼 베기&gt;는 서버렉이 적용되며, 클라이언트에서 계산되는 &lt;남은 시간&gt;에 비해
+약 2초 늦게 시전됩니다. 모든 도핑을 진행한 후 진입 직전에 타이머를 시작하면
+가장 적절하게 계산할 수 있을 것입니다.
+
+&lt;영혼 베기&gt;가 시전 중일 때에는 기타 스킬의 데미지가 들어오지 않으므로, 그 시점에
+본 프로그램을 조작할 것을 권장합니다. 프로그램의 디자인 또한 이를 기준으로 기획되
+었습니다.</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>실카 계산기는 진 힐라 트라이 시 중요한 실카 컨트롤을 계산해 줍니다.
+
+실카 계산 공식은 (남은 총 데스 카운트) / 2이며, 이는 &lt;영혼 베기&gt; 시점에 갱신됩니다.
+계산의 편의성을 위해 총 사망 횟수를 입력하면 제단 소환까지 남은 실카를 즉시 표시합
+니다.
+
+본 사항은 참고용으로 추가되었으며, 실전에서 활용할지의 여부는 사용자 분들이 직접
+결정해주시면 될 것 같습니다.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
