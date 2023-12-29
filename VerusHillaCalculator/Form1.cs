@@ -108,8 +108,17 @@ namespace VerusHillaCalculator
         private void GlobalTimer_Tick(object sender, EventArgs e)
         {
             time--;
+            if (time == 0)
+            {
+                BtnFinish_Click(sender,e);
+            }
             Timer(GameTimer, time);
-            Timer(NextTimer, GetPhaseTime() - lastTime + time - 2);
+            int nowTime = GetPhaseTime() - lastTime + time - 2;
+            if(nowTime <= 0)
+            {
+                lastTime = time;
+            }
+            Timer(NextTimer, nowTime);
         }
 
         private void BtnStart_Click(object sender, EventArgs e)
@@ -126,6 +135,7 @@ namespace VerusHillaCalculator
             Timer(GameTimer, time);
             Timer(NextTimer, 0);
             phase = 1;
+            TimerGroup.Text = "실카 타이머 (다음 페이즈: " + (hardMode ? "61.0%" : "51.0%") + ")";
             GlobalTimer.Start();
         }
 
