@@ -85,7 +85,7 @@
             VersionLabel.Name = "VersionLabel";
             VersionLabel.Size = new Size(163, 30);
             VersionLabel.TabIndex = 4;
-            VersionLabel.Text = "메이플스토리 진 힐라 계산기\r\nversion 1.0.0 (20231216)";
+            VersionLabel.Text = "메이플스토리 진 힐라 계산기\r\nversion 0.6.0 (20231229)";
             // 
             // Form2
             // 
